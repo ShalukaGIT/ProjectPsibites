@@ -3,7 +3,16 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-		<title>Interactive Survey</title>
+		
+		<!-- 1. The browser tab title -->
+		<title>Mission: Defeat Sleepy Lectures!</title>
+		
+		<!-- 2. Social Media Link Preview Settings (Forces WhatsApp/Discord to show correct info instead of "bridge") -->
+		<meta property="og:title" content="Mission: Defeat Sleepy Lectures!" />
+		<meta property="og:description" content="Help us dig the future of learning by completing this interactive survey!" />
+		<meta property="og:image" content="index.png" />
+		<meta property="og:type" content="website" />
+
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -90,9 +99,10 @@ body {
 	z-index: 1;
 }
 		</style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
-<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
-Help Us Dig the Future of Learning!
+		
+		<!-- 3. Added '?v=2' to bypass browser caching and force your new icon to load immediately -->
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png?v=2" />
+		<link rel="apple-touch-icon" href="index.apple-touch-icon.png?v=2"/>
 	</head>
 	<body>
 		<canvas id="canvas">
@@ -174,7 +184,6 @@ const engine = new Engine(GODOT_CONFIG);
 			} catch (err) {
 				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
 			}
-			// There's a chance that installing the service worker would fix the issue
 			Promise.race([
 				serviceWorkerRegistrationPromise.then((registration) => {
 					if (registration != null) {
@@ -182,18 +191,15 @@ const engine = new Engine(GODOT_CONFIG);
 					}
 					return registration;
 				}).then(() => engine.installServiceWorker()),
-				// For some reason, `getRegistration()` can stall
 				new Promise((resolve) => {
 					setTimeout(() => resolve(), 2000);
 				}),
 			]).then(() => {
-				// Reload if there was no error.
 				window.location.reload();
 			}).catch((err) => {
 				console.error('Error while registering service worker:', err);
 			});
 		} else {
-			// Display the message as usual
 			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
 			displayFailureNotice(missingMsg + missing.join('\n'));
 		}
@@ -217,4 +223,3 @@ const engine = new Engine(GODOT_CONFIG);
 		</script>
 	</body>
 </html>
-
